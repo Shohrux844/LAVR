@@ -1,0 +1,128 @@
+[
+  {
+    "model": "cpashop.Category",
+    "pk": 1,
+    "fields": {
+      "name": "Uy uchun",
+      "slug": "uy-uchun",
+      "icon": "https://alijahon.uz/media/category_images/7AA93102-81A6-41E5-9DDA-9CA2C6427E3B.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 2,
+    "fields": {
+      "name": "Bolalar uchun",
+      "slug": "bolalar-uchun",
+      "icon": "https://alijahon.uz/media/category_images/9FAD31AD-312A-44A0-9AC3-247DA89DE70E.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 3,
+    "fields": {
+      "name": "Sovg'a",
+      "slug": "sovga",
+      "icon": "https://alijahon.uz/media/category_images/81DA27B0-3F62-4376-AB3C-51B4781EEBC0.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 4,
+    "fields": {
+      "name": "Ayollar",
+      "slug": "ayollar",
+      "icon": "https://alijahon.uz/media/category_images/DD1F5E6F-C0C2-46AB-B37A-4EE53C319728.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 5,
+    "fields": {
+      "name": "Davolovchi mahsulotlar",
+      "slug": "davolovchi-mahsulotlar",
+      "icon": "https://alijahon.uz/media/category_images/A2ABC07B-AE08-4D84-B8DA-C21DA27DFCBC.jpeg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 6,
+    "fields": {
+      "name": "Erkaklar uchun",
+      "slug": "erkaklar-uchun",
+      "icon": "https://alijahon.uz/media/category_images/4BB898DC-10EE-4BC2-8FF2-CEE45C4A8452.jpeg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 7,
+    "fields": {
+      "name": "Fitnes",
+      "slug": "fitnes",
+      "icon": "https://alijahon.uz/media/category_images/6F1333A3-9765-4216-AE0A-A576B81DB510.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 8,
+    "fields": {
+      "name": "Davolovchi mazlar",
+      "slug": "davolovchi-mazlar",
+      "icon": "https://alijahon.uz/media/category_images/1561E941-0F91-4C87-BCAA-49DD49C48E0B.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 9,
+    "fields": {
+      "name": "Moshina uchun",
+      "slug": "moshina-uchun",
+      "icon": "https://alijahon.uz/media/category_images/2233F793-0315-4552-ACB8-C7522FDDEC29.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 10,
+    "fields": {
+      "name": "Kitoblar",
+      "slug": "kitoblar",
+      "icon": "https://alijahon.uz/media/category_images/thumb_15799_100_100_0_0_crop.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 11,
+    "fields": {
+      "name": "Aqlli soatlar",
+      "slug": "aqlli-soatlar",
+      "icon": "https://alijahon.uz/media/category_images/96963A48-D993-40BC-80A8-3BAA85637F61.webp"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 12,
+    "fields": {
+      "name": "Atir",
+      "slug": "atir",
+      "icon": "https://alijahon.uz/media/category_images/Yg4YXhzi--q1_xRv65IqTJrv1RrtiC9zGsLIhv3AP6th2DUxUHXY2xw_45ha_2Dtcdu6eYLd_B2wwXeu.jpg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 13,
+    "fields": {
+      "name": "Yangi yil mahsulotlari",
+      "slug": "yangi-yil-mahsulotlari",
+      "icon": "https://img.icons8.com/color/48/gift--v1.png"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 14,
+    "fields": {
+      "name": "Elektronika",
+      "slug": "elektronika",
+      "icon": "https://alijahon.uz/media/category_images/IMG_1699.webp"
+    }
+  }
+]

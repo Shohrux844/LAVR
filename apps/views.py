@@ -92,19 +92,27 @@ def _period_stats(date_from, date_to, firma=''):
     }
 
 
+
+
+
 def _agent_stats(date_from, date_to, firma=''):
-    agents = Agent.objects.filter(is_active=True)
+    period_filter = Q(
+        orders__date_created__date__gte=date_from,
+        orders__date_created__date__lte=date_to,
+    ) & ~Q(orders__status='cancelled')
+
+    if firma:
+        period_filter &= Q(orders__cliente__firma_name=firma)
+
+    agents = (
+        Agent.objects.filter(is_active=True)
+        .annotate(period_sales=Sum('orders__total_sum', filter=period_filter))
+        .order_by('-period_sales')
+    )
+
     result = []
     for agent in agents:
-        orders = Order.objects.filter(
-            agent=agent,
-            date_created__date__gte=date_from,
-            date_created__date__lte=date_to,
-        ).exclude(status='cancelled')
-        if firma:
-            orders = orders.filter(cliente__firma_name=firma)
-
-        sales = orders.aggregate(s=Sum('total_sum'))['s'] or 0
+        sales = agent.period_sales or 0
         commission = int(sales * float(agent.commission_rate) / 100)
         result.append({
             'agent': agent,
@@ -112,31 +120,45 @@ def _agent_stats(date_from, date_to, firma=''):
             'commission_rate': agent.commission_rate,
             'commission': commission,
         })
-    result.sort(key=lambda r: r['sales'], reverse=True)
     return result
 
 
 def _cliente_stats(date_from, date_to, firma='', limit=8):
+    period_filter = Q(
+        orders__date_created__date__gte=date_from,
+        orders__date_created__date__lte=date_to,
+    ) & ~Q(orders__status='cancelled')
+
     clientes = Cliente.objects.filter(is_active=True)
     if firma:
         clientes = clientes.filter(firma_name=firma)
 
+    clientes = (
+        clientes
+        .annotate(period_sales=Sum('orders__total_sum', filter=period_filter))
+        .filter(period_sales__gt=0)
+    )
+
+    # To'langan summani ham bitta so'rovda olamiz — Payment orqali
+    # bog'liq bo'lgani uchun buni alohida annotate qilamiz (order__cliente).
+    from apps.models import Payment
+    paid_map = dict(
+        Payment.objects.filter(
+            confirmed=True,
+            order__cliente__in=clientes,
+            order__date_created__date__gte=date_from,
+            order__date_created__date__lte=date_to,
+        )
+        .exclude(order__status='cancelled')
+        .values('order__cliente')
+        .annotate(total_paid=Sum('amount'))
+        .values_list('order__cliente', 'total_paid')
+    )
+
     result = []
     for cliente in clientes:
-        orders = Order.objects.filter(
-            cliente=cliente,
-            date_created__date__gte=date_from,
-            date_created__date__lte=date_to,
-        ).exclude(status='cancelled')
-
-        total_sales = orders.aggregate(s=Sum('total_sum'))['s'] or 0
-        if total_sales == 0:
-            continue
-
-        total_paid = (
-                Payment.objects.filter(order__in=orders, confirmed=True)
-                .aggregate(s=Sum('amount'))['s'] or 0
-        )
+        total_sales = cliente.period_sales or 0
+        total_paid = paid_map.get(cliente.pk, 0) or 0
         debt = total_sales - total_paid
         result.append({
             'cliente': cliente,
@@ -144,6 +166,7 @@ def _cliente_stats(date_from, date_to, firma='', limit=8):
             'total_paid': total_paid,
             'debt': debt,
         })
+
     result.sort(key=lambda r: r['debt'], reverse=True)
     return result[:limit]
 

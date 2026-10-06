@@ -37,7 +37,7 @@ class Category(Model):
     name = CharField(max_length=100)
     slug = SlugField(max_length=100, unique=True, blank=True)
     icon = CharField(max_length=50, default='ti-package',
-                      help_text="Agar rasm yuklanmasa, shu icon ko'rsatiladi")
+                     help_text="Agar rasm yuklanmasa, shu icon ko'rsatiladi")
     image = ImageField(upload_to='categories/', null=True, blank=True)
     order = PositiveIntegerField(default=0)
     is_active = BooleanField(default=True)
@@ -69,25 +69,39 @@ class Product(Model):
     price = IntegerField(default=0, help_text="So'mda narx")
     stock = PositiveIntegerField(default=0, help_text="Skladda mavjud miqdor")
     low_stock_threshold = PositiveIntegerField(
-        default=10,
-        help_text="Shu miqdordan kam bo'lsa ogohlantirish chiqadi"
+        default=10, help_text="Shu miqdordan kam bo'lsa ogohlantirish chiqadi"
     )
     is_active = BooleanField(default=True)
     date_created = DateTimeField(auto_now_add=True)
 
+    # ─── YANGI maydonlar ───
+    slug = SlugField(max_length=280, unique=True, blank=True, null=True)
+    is_public = BooleanField(default=False, help_text="Ochiq do'konda ko'rsatilsinmi?")
+    discount = IntegerField(default=0, blank=True, help_text="Chegirma foizi")
+    referral_commission_percent = DecimalField(
+        max_digits=5, decimal_places=2, default=0,
+        help_text="Referal link orqali sotilganda komissiya, %"
+    )
+
     @property
     def stock_status(self):
         if self.stock == 0:
-            return 'out'  # Tugagan
+            return 'out'
         elif self.stock <= self.low_stock_threshold:
-            return 'low'  # Kam qolgan
-        return 'ok'  # Yetarli
+            return 'low'
+        return 'ok'
 
     def save(self, *args, **kwargs):
-        # Rasm yangi yuklangan/o'zgargan bo'lsagina siqamiz — tahrirlashda
-        # boshqa maydon (masalan narx) o'zgarganda qayta siqmaymiz.
         if self.image and image_field_changed(Product, self.pk, 'image', self.image):
             compress_image(self.image)
+        if not self.slug:
+            base = slugify(self.name)
+            slug = base
+            i = 1
+            while Product.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -139,6 +153,19 @@ class Order(Model):
             Order.objects.filter(pk=self.pk).update(number=self.number)
         else:
             super().save(*args, **kwargs)
+
+    @property
+    def active_items(self):
+        """
+        Vozvrat qilingan (quantity=0 bo'lib qolgan) qatorlarni chiqarib
+        tashlab, faqat hali "sotilgan holatda" qolgan itemlarni qaytaradi.
+
+        Bu property `orders/detail.html`, `agents/order_detail.html`,
+        `clients/order_detail.html` da bir necha marta takrorlangan
+        {% if item.quantity > 0 %} shartini almashtiradi — endi shunchaki
+        {% for item in order.active_items %} deb yozish kifoya.
+        """
+        return self.items.filter(quantity__gt=0).select_related('product')
 
     def __str__(self):
         return f"{self.number} — {self.cliente}"
@@ -397,3 +424,18 @@ class OrderReturnItem(Model):
     class Meta:
         verbose_name = "Vozvrat qatori"
         verbose_name_plural = "Vozvrat qatorlari"
+
+    # ─── Ochiq do'kon (CPA) uchun yangi maydonlar ───
+    slug = SlugField(max_length=280, unique=True, blank=True, null=True)
+    is_public = BooleanField(
+        default=False,
+        help_text="Ochiq do'konda (iste'molchilarga) ko'rsatilsinmi?"
+    )
+    discount = IntegerField(
+        default=0, blank=True,
+        help_text="Ochiq do'kon uchun ko'rsatiladigan chegirma foizi (faqat vizual belgi)"
+    )
+    referral_commission_percent = DecimalField(
+        max_digits=5, decimal_places=2, default=0,
+        help_text="Ulashish linki orqali sotilganda tarqatuvchiga beriladigan komissiya, %"
+    )

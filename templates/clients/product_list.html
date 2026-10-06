@@ -1,71 +1,117 @@
 {% extends "clients/base_client.html" %}
-{% block title %}Tovarlar{% endblock %}
+{% block title %}Katalog{% endblock %}
+{% block breadcrumb %}Katalog{% endblock %}
 
 {% block content %}
-    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-bottom:14px;">
-        <a href="{% url 'client_product_list' %}" class="card"
-           style="padding:12px; text-align:center; text-decoration:none; color:#1a1a1a;
-                   {% if not current_category %}border-color:#534AB7; background:#EEEDFE;{% endif %}">
-            <i class="ti ti-apps" style="font-size:22px; color:#534AB7;"></i>
-            <div style="font-size:11.5px; font-weight:500; margin-top:6px;">Barchasi</div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         KATEGORIYALAR — LAVR bosh sahifasidagi ikonka-grid uslubida:
+         kvadrat kartalar, o'rtada qizil chiziqli ikonka, pastda nom.
+         Tanlangan kategoriya qizil ramka + och-pushti fon bilan
+         ajratiladi (LAVR'da bo'lmagan, lekin holatni ko'rsatish uchun
+         zarur amaliy qo'shimcha).
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="section-title-row">
+        <h2>Kategoriyalar</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px; margin-bottom:24px;">
+        <a href="{% url 'client_product_list' %}"
+           style="text-decoration:none; color:inherit; display:flex; flex-direction:column; align-items:center; gap:8px;
+                  padding:14px 6px; border-radius:12px; border:1px solid {% if not current_category %}var(--brand){% else %}var(--border){% endif %};
+                  background:{% if not current_category %}var(--brand-light){% else %}#fff{% endif %};">
+            <i class="ti ti-apps" style="font-size:24px; color:var(--brand);"></i>
+            <span style="font-size:11px; font-weight:600; text-align:center; line-height:1.25;">Barchasi</span>
         </a>
         {% for cat in categories %}
-            <a href="?category={{ cat.slug }}" class="card"
-               style="padding:12px; text-align:center; text-decoration:none; color:#1a1a1a;
-                       {% if current_category == cat %}border-color:#534AB7; background:#EEEDFE;{% endif %}">
+            <a href="?category={{ cat.slug }}"
+               style="text-decoration:none; color:inherit; display:flex; flex-direction:column; align-items:center; gap:8px;
+                      padding:14px 6px; border-radius:12px; border:1px solid {% if current_category == cat %}var(--brand){% else %}var(--border){% endif %};
+                      background:{% if current_category == cat %}var(--brand-light){% else %}#fff{% endif %};">
                 {% if cat.image %}
-                    <img src="{{ cat.image.url }}" style="width:26px;height:26px;object-fit:cover;border-radius:6px;">
+                    <img src="{{ cat.image.url }}" style="width:24px;height:24px;object-fit:cover;border-radius:6px;">
                 {% else %}
-                    <i class="ti {{ cat.icon }}" style="font-size:26px; color:#534AB7;"></i>
+                    <i class="ti {{ cat.icon }}" style="font-size:24px; color:var(--brand);"></i>
                 {% endif %}
-                <div style="font-size:11.5px; font-weight:500; margin-top:6px;">{{ cat.name }}</div>
+                <span style="font-size:11px; font-weight:600; text-align:center; line-height:1.25;">{{ cat.name }}</span>
             </a>
         {% endfor %}
     </div>
-    <form method="get" style="display:flex; gap:8px; margin-bottom:12px;">
-        <input type="text" name="q" value="{{ q }}" placeholder="Tovar nomi yoki SKU..." class="form-control">
-        <button type="submit" class="btn btn-primary"><i class="ti ti-search"></i></button>
-        {% if q %}<a href="{% url 'client_product_list' %}" class="btn">✕</a>{% endif %}
+
+    <!-- ═══════════════════════════════════════════════════════════
+         QIDIRUV FILTRI — asosiy qidiruv tepa header'da, bu yerda
+         faqat holat filtri qoladi (LAVR katalog sahifasidagi
+         "Kategoriya bo'yicha filtr" panjarasiga o'xshash, soddalashtirilgan)
+         ═══════════════════════════════════════════════════════════ -->
+    <form method="get" style="display:flex; gap:8px; margin-bottom:16px;">
+        <input type="hidden" name="category" value="{{ category_slug }}">
+        <input type="text" name="q" value="{{ q }}" placeholder="Shu kategoriyada qidirish..." class="form-control">
+        <button type="submit" class="btn btn-primary" style="flex-shrink:0; padding:9px 14px;">
+            <i class="ti ti-search"></i>
+        </button>
+        {% if q %}
+            <a href="?category={{ category_slug }}" class="btn" style="flex-shrink:0;">✕</a>
+        {% endif %}
     </form>
 
-    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;">
-        {% for p in products %}
-            <div class="card" style="overflow:hidden;">
-                {% if p.image %}
-                    <div style="width:100%; aspect-ratio:4/3; background:#F7F7F9; display:flex; align-items:center; justify-content:center; padding:16px; box-sizing:border-box;">
-                        <img src="{{ p.image.url }}"
-                             style="max-width:100%; max-height:100%; object-fit:contain; display:block;">
-                    </div>
-                {% else %}
-                    <div style="width:100%; aspect-ratio:4/3; background:#F5F5F7; display:flex; align-items:center; justify-content:center;">
-                        <i class="ti ti-package" style="font-size:36px; color:#ccc;"></i>
-                    </div>
-                {% endif %}
-                <div style="padding:16px;">
-                    <div style="font-size:14px; font-weight:500; margin-bottom:2px;">{{ p.name }}</div>
-                    <div style="font-size:12px; color:#888; margin-bottom:10px;">{{ p.sku }}</div>
-                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:10px;">
-                        <span style="color:#888;">Narx:</span><span style="font-weight:500;">{{ p.price|floatformat:0 }} so'm</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:12px;">
-                        <span style="color:#888;">Miqdor:</span>
-                        <span style="font-weight:600;">{{ p.stock }} dona
-                            {% if p.stock_status == 'out' %}
-                                <span class="badge badge-red" style="margin-left:4px;">Tugagan</span>
-                            {% elif p.stock_status == 'low' %}
-                                <span class="badge badge-amber" style="margin-left:4px;">Kam</span>{% endif %}
-      </span>
-                    </div>
+    <!-- ═══════════════════════════════════════════════════════════
+         MAHSULOTLAR GRID — LAVR "Novinki" karuselidagi karta uslubi:
+         oq fon, o'rtada mahsulot, tagida nom + narx, chap tepada
+         burchak lentasi (bu yerda "NEW" o'rniga sklad holati).
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="section-title-row">
+        <h2>{% if current_category %}{{ current_category.name }}{% else %}Barcha mahsulotlar{% endif %}</h2>
+        <span style="font-size:12px; color:var(--text-muted);">{{ products.paginator.count|default:products|length }} ta</span>
+    </div>
 
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;">
+        {% for p in products %}
+            <div class="card" style="overflow:hidden; position:relative;">
+                {% if p.stock_status == 'out' %}
+                    <span class="ribbon-new" style="background:#8A8A93;">TUGAGAN</span>
+                {% elif p.date_created and p.is_new %}
+                    <span class="ribbon-new">NEW</span>
+                {% endif %}
+
+                <div style="width:100%; aspect-ratio:1/1; background:var(--section); display:flex; align-items:center; justify-content:center; padding:18px; box-sizing:border-box;">
+                    {% if p.image %}
+                        <img src="{{ p.image.url }}" alt="{{ p.name }}"
+                             style="max-width:100%; max-height:100%; object-fit:contain; display:block;">
+                    {% else %}
+                        <i class="ti ti-package" style="font-size:32px; color:#D5D5DA;"></i>
+                    {% endif %}
+                </div>
+
+                <div style="padding:12px;">
+                    <div style="font-size:12.5px; font-weight:500; line-height:1.35; min-height:34px; margin-bottom:8px;">
+                        {{ p.name }}
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <span style="font-size:15px; font-weight:800; font-family:'Manrope',sans-serif;">
+                            {{ p.price|floatformat:0 }} <span style="font-size:11px; font-weight:600; color:var(--text-muted);">so'm</span>
+                        </span>
+                        {% if p.stock_status == 'ok' %}
+                            <span class="badge badge-green">Bor</span>
+                        {% elif p.stock_status == 'low' %}
+                            <span class="badge badge-amber">Kam</span>
+                        {% else %}
+                            <span class="badge badge-gray">Yo'q</span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         {% empty %}
-            <div style="grid-column:1/-1; text-align:center; color:#aaa; padding:48px;">Tovar topilmadi</div>
+            <div style="grid-column:1/-1; text-align:center; color:var(--text-faint); padding:48px 16px;">
+                <i class="ti ti-package-off" style="font-size:36px; display:block; margin-bottom:8px;"></i>
+                Mahsulot topilmadi
+            </div>
         {% endfor %}
     </div>
 
+    <!-- Doimiy pastki "Buyurtma berish" tugmasi — LAVR'da yo'q,
+         lekin mijoz-ilova uchun asosiy CTA doim ko'rinib turishi kerak -->
     <a href="{% url 'client_order_request_create' %}" class="btn btn-primary"
-       style="width:100%; justify-content:center; margin-top:16px; padding:12px;">
+       style="width:100%; justify-content:center; margin-top:20px; padding:13px;">
         <i class="ti ti-shopping-cart-plus"></i> Buyurtma berish
     </a>
+
 {% endblock %}

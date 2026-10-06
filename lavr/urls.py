@@ -48,8 +48,10 @@ urlpatterns = [
     path('', include('apps.urls')),
     path('agent/', include('agent.urls')),
     path('client/', include('client.urls')),
+    path('shop/', include('cpashop.urls')),
 ]
 
 # ─── Media fayllarni development rejimida ko'rsatish ───
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,
+                                                                                          document_root=settings.STATIC_ROOT)

@@ -1,0 +1,100 @@
+[
+  {
+    "model": "cpashop.Region",
+    "pk": 1,
+    "fields": {
+      "name": "Toshkent"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 2,
+    "fields": {
+      "name": "Andijon"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 3,
+    "fields": {
+      "name": "Buxoro"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 4,
+    "fields": {
+      "name": "Farg'ona"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 5,
+    "fields": {
+      "name": "Jizzax"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 6,
+    "fields": {
+      "name": "Xorazm"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 7,
+    "fields": {
+      "name": "Namangan"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 8,
+    "fields": {
+      "name": "Navoiy"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 9,
+    "fields": {
+      "name": "Qashqadaryo"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 10,
+    "fields": {
+      "name": "Qoraqalpog'iston"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 11,
+    "fields": {
+      "name": "Samarqand"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 12,
+    "fields": {
+      "name": "Sirdaryo"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 13,
+    "fields": {
+      "name": "Surxondaryo"
+    }
+  },
+  {
+    "model": "cpashop.Region",
+    "pk": 14,
+    "fields": {
+      "name": "Toshkent viloyati"
+    }
+  }
+]

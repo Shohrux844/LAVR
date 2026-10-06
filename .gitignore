@@ -1,22 +1,30 @@
 # Maxfiy sozlamalar — hech qachon Git'ga tushmasin
 .env
+.env.*
+!.env.example
 
 # Python
 __pycache__/
 *.pyc
 venv/
 env/
+*.egg-info/
 
 # Django
 db.sqlite3
 media/
-static/
+staticfiles/
 *.log
 
 # IDE
 .idea/
 .vscode/
 
-agent/migrations/*
-apps/migrations/*
-client/migrations/*
+# DIQQAT: migratsiyalar ENDI ignore qilinmaydi — ular versiya nazoratida
+# bo'lishi SHART, aks holda jamoa a'zolari va production turli xil DB
+# sxemasiga ega bo'lib qoladi. Avval ignore qilingan migration fayllarini
+# quyidagi buyruq bilan qayta generatsiya qilib, Git'ga qo'shing:
+#
+#   python manage.py makemigrations apps agent client
+#   git add apps/migrations agent/migrations client/migrations
+#   git commit -m "Migratsiyalarni versiya nazoratiga qo'shish"

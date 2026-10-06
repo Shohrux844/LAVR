@@ -30,21 +30,6 @@ class CategoryForm(forms.ModelForm):
                 f.widget.attrs.update(ATTRS)
 
 
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ['category', 'name', 'sku', 'image', 'description', 'price', 'stock', 'low_stock_threshold']
-        widgets = {'description': forms.Textarea(attrs=TEXTAREA)}
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for name, f in self.fields.items():
-            if name == 'image':
-                f.widget.attrs.update(FILE)
-            elif not isinstance(f.widget, forms.Textarea):
-                f.widget.attrs.update(ATTRS)
-
-
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -103,22 +88,24 @@ class OrderItemForm(forms.ModelForm):
         price = cleaned_data.get('price')
         quantity = cleaned_data.get('quantity')
 
-        is_empty = not product and price in (None, '') and not quantity
+        # TUZATILDI: quantity=0 endi "bo'sh qator" bilan aralashtirilmaydi.
+        # Faqat quantity umuman kiritilmagan (None) bo'lsa bo'sh deb hisoblanadi.
+        is_empty = not product and price in (None, '') and quantity is None
 
         if is_empty:
-            # Bo'sh "extra" qator — bu majburiy emas, formsetga
-            # uni o'tkazib yuborishni aytamiz
             cleaned_data['DELETE'] = True
             return cleaned_data
 
-        # Agar qatorda BIROR maydon to'ldirilgan bo'lsa, endi
-        # product/price/quantity HAMMASI to'ldirilishi shart
         if not product:
             self.add_error('product', "Tovar tanlang.")
         if price in (None, ''):
             self.add_error('price', "Narxni kiriting.")
-        if not quantity:
+        if quantity is None:
             self.add_error('quantity', "Miqdorni kiriting.")
+        elif quantity <= 0:
+            # YANGI: quantity=0 yoki manfiy bo'lsa endi ANIQ xato chiqadi,
+            # jim o'chirilmaydi.
+            self.add_error('quantity', "Miqdor 0 dan katta bo'lishi kerak.")
 
         return cleaned_data
 
@@ -212,3 +199,26 @@ class VisitForm(forms.ModelForm):
         self.fields['longitude'].widget = forms.HiddenInput()
         self.fields['point'].widget.attrs.update(ATTRS)
         self.fields['note'].widget = forms.Textarea(attrs=TEXTAREA)
+
+
+# ↓↓↓ MANA BU YERDA "class ProductForm" so'zidan OLDIN hech qanday
+# bo'shliq (tab/space) BO'LMASLIGI kerak — xuddi yuqoridagi "class VisitForm"
+# bilan bir xil darajada boshlanishi kerak:
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = [
+            'category', 'name', 'sku', 'image', 'description', 'price',
+            'stock', 'low_stock_threshold',
+            'is_public', 'discount', 'referral_commission_percent',
+        ]
+        widgets = {'description': forms.Textarea(attrs=TEXTAREA)}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, f in self.fields.items():
+            if name == 'image':
+                f.widget.attrs.update(FILE)
+            elif not isinstance(f.widget, forms.Textarea):
+                f.widget.attrs.update(ATTRS)
