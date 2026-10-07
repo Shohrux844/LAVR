@@ -1,0 +1,87 @@
+{% extends 'cpashop/base/include.html' %}
+
+
+{% block body %}
+	<div class="card mb-3">
+    <div class="card-body">
+        <div class="container">
+            <div class="container border-bottom-4">
+                <div class="header_tab_menu">
+                    <div class="header_menu" style="overflow: auto">
+                        <a href="{% url 'cpashop:thread-statistic' %}?period=today" class="btn btn-default">Bugun</a>
+                        <a href="{% url 'cpashop:thread-statistic' %}?period=last_day" class="btn btn-default">Kechagi</a>
+                        <a href="{% url 'cpashop:thread-statistic' %}?period=wekly" class="btn btn-default">Haftalik</a>
+                        <a href="{% url 'cpashop:thread-statistic' %}?period=monthly" class="btn btn-default">Oylik</a>
+                        <a href="{% url 'cpashop:thread-statistic' %}?period=all" class="btn btn-default">Hammasi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="text-center">
+
+                    <tr>
+                        <th scope="col">Oqim</th>
+                        <th scope="col">Mahsulot</th>
+                        <th scope="col">Tashrif</th>
+                        <th scope="col">Yangi</th>
+                        <th scope="col">Dastavkaga tayyor</th>
+                        <th scope="col">Yetkazilmoqda</th>
+                        <th scope="col">Yetqazib berildi</th>
+                        <th scope="col">Telefon ko'tarmadi</th>
+                        <th scope="col">Bekor qilindi</th>
+                        <th scope="col">Arxivlandi</th>
+                    </tr>
+                    <tr class="bg-info">
+                        <td> JAMI</td>
+                        <td> {{ thread_count }}</td>
+                        <td>{{ all_visit_count }}</td>
+                        <td>{{ all_new_count }}</td>
+                        <td> {{ all_ready_to_order_count }}</td>
+                        <td> {{ all_delivering_count }}</td>
+                        <td> {{ all_delivered_count }}</td>
+                        <td> {{ all_not_pick_up_count }}</td>
+                        <td> {{ all_canceled_count }}</td>
+                        <td> {{ all_archived_count }}</td>
+
+                    </tr>
+                    </thead>
+
+                    <tbody class="text-center">
+                    {% for statis in statistics %}
+                    	<tr>
+                        <th>{{ statis.name }}</th>
+                        <th>{{ statis.product.name }}</th>
+                        <td>{{ statis.visit_count }}</td>
+                        <td>{{ statis.new_count }}</td>
+                        <td>{{ statis.ready_to_order_count }}</td>
+                        <td>{{ statis.delivering_count }}</td>
+                        <td>{{ statis.delivered_count }}</td>
+                        <td>{{ statis.not_pick_up_count }}</td>
+                        <td>{{ statis.canceled_count }}</td>
+                        <td>{{ statis.archived_count }}</td>
+                    </tr>
+                    {% endfor %}
+
+
+
+
+                    <tr class="bg-info">
+                        <td> JAMI</td>
+                        <td> {{ thread_count }}</td>
+                        <td>{{ all_visit_count }}</td>
+                        <td>{{ all_new_count }}</td>
+                        <td> {{ all_ready_to_order_count }}</td>
+                        <td> {{ all_delivering_count }}</td>
+                        <td> {{ all_delivered_count }}</td>
+                        <td> {{ all_not_pick_up_count }}</td>
+                        <td> {{ all_canceled_count }}</td>
+                        <td> {{ all_archived_count }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

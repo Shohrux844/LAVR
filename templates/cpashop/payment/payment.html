@@ -1,0 +1,106 @@
+{% extends 'cpashop/base/include.html' %}
+
+
+{% block body %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-sm-6 p-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Mening hisobim</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Asosiy balansda: {{ cpa_user.balance }} so'm</h5>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6 p-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>To'lovga so'rov berish formasi</h5>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <h5>{{ message }}</h5>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-money" role="tabpanel"
+                                     aria-labelledby="nav-money-tab">
+                                    <form class="card-body" method="post" action="{% url 'cpashop:payment' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            Karta raqami <input type="text" name="card_number" class="form-control"
+                                                                placeholder="Karta raqamini kiriting" maxlength="16"
+                                                                required="" id="id_card_number">
+                                        </div>
+
+                                        <div class="form-group">
+                                            Amount <input type="number" name="amount" class="form-control"
+                                                          placeholder="Miqdorini kiriting" required="" id="id_amount">
+                                            <input type="hidden" name="user" value="{{ cpa_user.id }}">
+                                        </div>
+                                        <input type="submit" value="Tasdiqlash" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Sana</th>
+                                <th scope="col">Hisob raqam</th>
+                                <th scope="col">Summa</th>
+                                <th scope="col">Holat</th>
+                                <th scope="col">Xabar</th>
+                                <th scope="col">Check</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% if not payments %}
+                                <tr class="text-center">
+
+                                    <th colspan="5"> Hozircha sizda pul yechish sorovlari mavjud emas</th>
+
+                                </tr>
+                            {% else %}
+                                {% for payment in payments %}
+                                    <tr>
+                                        <th scope="col">{{ payment.payment_at|date:'Y-m-d H:i:s' }}</th>
+                                        <th scope="col">{{ payment.card_number }}</th>
+                                        <th scope="col">{{ payment.amount }}</th>
+                                        <th scope="col">{{ payment.status }}</th>
+                                        <th scope="col">{{ payment.description }}</th>
+                                        <th scope="col">
+                                            {% if payment.check_payment %}
+                                                <a href="{{ payment.check_payment.url }}"><img src="{{ payment.check_payment.url }}" alt="" style="width: 50px; height: 50px"></a>
+                                            {% endif %}
+                                        </th>
+
+
+                                    </tr>
+                                {% endfor %}
+
+
+                            {% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

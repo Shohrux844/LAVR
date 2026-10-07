@@ -1,0 +1,80 @@
+{% extends 'cpashop/base/include.html' %}
+{% load humanize %}
+{% block body %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="container border-bottom-4">
+                <div class="header_tab_menu ">
+                    <div class="header_menu active" style="overflow: auto">
+                        <a href="{% url 'cpashop:product-list' 'all' %}"
+                           class="btn btn-default {% if session_category == None %}active{% endif %}">
+                            Barchasi
+                        </a>
+                        {% for category in categories %}
+
+                            <a href="{% url 'cpashop:product-list' category.slug %}"
+                               class="btn btn-default {% if session_category and session_category.pk == category.pk %}active{% endif %}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="productsList">
+                <div class="content_grid">
+                    <div class="row">
+                        {% for product in products %}
+                            <div class="col-6 mb-3 col-md-6 col-lg-4">
+                                <div class="border rounded-1 d-flex flex-column justify-content-between pb-3">
+                                    <div class="overflow-hidden">
+                                        <div class="position-relative rounded-top overflow-hidden">
+                                            <a class="d-block" href="{% url 'cpashop:product-detail' product.slug %}"><img
+                                                    class="img-fluid rounded-top"
+                                                    src="{{ product.image.url }}" alt=""></a>
+                                        </div>
+                                        <div class="p-2">
+                                            <h5 class="fs-0"><a class="text-dark"
+                                                                href="{% url 'cpashop:product-detail' product.slug %}">{{ product.name }}</a>
+                                            </h5>
+                                            <p class="fs--1 mb-2"><a class="text-500"
+                                                                     href="{% url 'cpashop:product-list' product.category.slug %}">{{ product.category.name }}</a>
+                                            </p>
+                                            <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-2"> {{ product.price|floatformat:0|intcomma }}
+                                                <!-- <del class="ms-2 fs--1 text-500">180 000 so'm </del> -->
+                                            </h5>
+                                            <p></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-between-center px-3">
+                                        <div><span class="fa fa-star text-warning"></span><span
+                                                class="fa fa-star text-warning"></span><span
+                                                class="fa fa-star text-warning"></span><span
+                                                class="fa fa-star text-warning"></span><span
+                                                class="fa fa-star text-300"></span><span
+                                                class="ms-1">(8)</span>
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-sm btn-falcon-default me-2 like-button {% if product.pk in liked_products_id %}bg-danger{% endif %}"
+                                               href="{% if not cpa_user %}{% url 'cpashop:auth' %}{% else %}#!{% endif %}" data-bs-toggle="tooltip"
+                                               data-bs-placement="top" data-product-id="{{ product.pk }}"
+                                               title="Add to Wish List"><span
+                                                    class="far fa-heart"></span></a><a
+                                                class="btn btn-sm btn-falcon-default"
+                                                href="{% if not cpa_user %}{% url 'cpashop:auth' %}{% else %}{% url 'cpashop:product-detail' product.slug %}{% endif %}" data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title=""><span
+                                                class="fas fa-cart-plus"></span></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

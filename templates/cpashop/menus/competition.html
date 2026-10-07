@@ -1,0 +1,80 @@
+{% extends 'cpashop/base/include.html' %}
+
+
+{% block body %}
+    <div class="card-group mt-2">
+        <div class="card overflow-hidden">
+            <div class="card-img-top"><img class="img-fluid" src="{{ site.competition_photo.url }}" alt="Konkurs"></div>
+            <div class="card-body">
+
+                {{ site.description|safe }}
+                <div class="row light">
+                    <div class="col-6 col-sm-6 col-lg-4 mb-4">
+                        <div class="card text-white bg-info">
+                            <div class="card-body">
+                                <div class="card-title">Boshlash</div>
+                                <p class="card-text">{{ site.start|date:"d-F, Y" }}-yil</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-6 col-lg-4 mb-4">
+                        <div class="card text-white bg-danger">
+                            <div class="card-body">
+                                <div class="card-title">Yakunlash</div>
+                                <p class="card-text">{{ site.finish|date:"d-F, Y" }}-yil</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                    <h5 class="mb-0" data-anchor="data-anchor" id="table-example">Konkurs natijalari<a
+                            class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="#" href="#table-example"
+                            style="padding-left: 0.375em;"></a></h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-0">
+            <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel"
+                     aria-labelledby="tab-dom-316cb649-6a3e-4ec3-9de8-7d83e880873f"
+                     id="dom-316cb649-6a3e-4ec3-9de8-7d83e880873f">
+                    <div id="tableExample"
+                         data-list="{&quot;valueNames&quot;:[&quot;name&quot;,&quot;email&quot;,&quot;age&quot;],&quot;page&quot;:10,&quot;pagination&quot;:true}">
+                        <div class="table-responsive scrollbar">
+                            <table class="table table-bordered table-striped fs--1 mb-0">
+                                <thead class="bg-200 text-900">
+                                <tr>
+                                    <th class="sort" data-sort="name">№</th>
+                                    <th class="sort" data-sort="email">Sotuvchi</th>
+                                    <th class="sort" data-sort="age">Sotilgan</th>
+                                </tr>
+                                </thead>
+                                <tbody class="list">
+                                {% for user in users %}
+                                	<tr>
+                                    <td class="name">{{ forloop.counter }}</td>
+                                    <td class="email">{{ user.first_name }}</td>
+                                    <td class="age">{{ user.order_count }}</td>
+                                </tr>
+                                {% endfor %}
+
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

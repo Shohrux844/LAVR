@@ -1,0 +1,197 @@
+{#============== phone number =================#}
+<script>
+        $('#phone-mask').inputmask({
+            "mask": "+\\9\\98(99) 999-99-99"
+        });
+        $('#messages-modal').modal('show');
+    </script>
+{#============================ region -> districts =============#}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#id_region").change(function(){
+            let region_id = $(this).val();
+            if(region_id) {
+                $.ajax({
+                    url: "{% url 'cpashop:district-list' %}",
+                    data: {'region_id': region_id},
+                    dataType: 'json',
+                    success: function(data){
+                        let citySelect = $("#id_district");
+                        citySelect.empty();
+                        $.each(data, function(index, city){
+                            citySelect.append('<option value="' + city.id + '">' + city.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $("#id_city").empty();
+                $("#id_city").append('<option value="">Shahar/Tumanni tanlang</option>');
+            }
+        });
+    });
+</script>
+{#================== wish list like ====================== #}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".like-button").forEach(button => {
+        button.addEventListener("click", function () {
+            let productId = this.dataset.productId;
+            let button = this;
+
+            fetch(`/wishlist/${productId}`, {
+                method: "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    button.classList.add("bg-danger");  // Like bosilgan bo‘lsa qizil bo‘ladi
+                } else {
+                    button.classList.remove("bg-danger"); // Unlike bo‘lsa rang o‘zgaradi
+                }
+            });
+        });
+    });
+});
+</script>
+{#============================ thread form ===========================#}
+<script>
+    $('.btn_open_modal').on('click', function () {
+        let product_id = $(this).attr('name');
+        let benefit = $(this).attr('data-bs-sell_price'); // To'g'ri metod
+        $('#hidden_product').val(product_id);
+        $('#id_discount').attr("placeholder", "Chegirma miqdori: " + benefit + " somgacha"); // To'g'ri usul
+    });
+
+
+</script>
+{#============== copy thread url ================= #}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".copy_ref_bn").forEach(button => {
+            button.addEventListener("click", function() {
+                // Nusxa olish kerak bo'lgan matn input maydonidan olinadi
+                let inputField = this.previousElementSibling.querySelector(".ref_link");
+
+                if (!inputField) {
+                    alert("Nusxa olish uchun matn topilmadi!");
+                    return;
+                }
+
+                // Inputni tanlab nusxalash
+                inputField.select();
+                inputField.setSelectionRange(0, 99999); // Mobil qurilmalar uchun
+                document.execCommand("copy");
+
+
+            });
+        });
+    });
+</script>
+{#===================================== diagram ========================================#}
+<script>
+    const regions_chart = document.getElementById('regions-chart');
+
+    new Chart(regions_chart, {
+        type: 'pie',
+        data: {
+            labels: ['Toshkent', 'Andijon', 'Buxoro', 'Fargona', 'Jizzax', 'Namangan', 'Navoiy', 'Qashqadaryo', 'Qoraqalpogiston', 'Samarqand', 'Sirdaryo', 'Surxondaryo', 'Toshkent viloyati', 'Xorazm'],
+            datasets: [{
+                label: 'Buyurtmalar',
+                data: ['',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       '',
+                       ''],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: "Viloyatlar bo'yicha buyurtmalar soni"
+                }
+            }
+        },
+    });
+</script>
+<script>
+    $(function () {
+        var availableTags = [
+
+    ];
+    $("#search-input").autocomplete({
+    source: availableTags
+    });
+    console.log(availableTags);
+});
+</script>
+<script>
+    const ctx = document.getElementById('order-chart');
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Yangi', 'Yetkazilmoqda', 'Yetkazildi'],
+                datasets: [{
+                    label: 'Buyurtmalar',
+                    data: ['0', '0', '0'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: "Holati bo'yicha buyurtmalar soni"
+                    }
+                }
+            },
+        });
+</script>
+<script>
+    const products_chart = document.getElementById('products-chart');
+    counts = '1,'.split(",")
+    products = ' Hameleon Kuzoynak,'.split(", ")
+    new Chart(products_chart, {
+        type: 'pie',
+        data: {
+            labels: products,
+            datasets: [{
+                label: 'Buyurtmalar',
+                data: counts,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: "Mahsulotlar bo'yicha buyurtmalar soni"
+                }
+            }
+        },
+    });
+</script>

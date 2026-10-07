@@ -1,0 +1,24 @@
+{% extends 'cpashop/base/include.html' %}
+
+{% block body %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="container">
+                <div class="d-flex justify-content-center">
+                    <canvas class="w-50 h-50 m-0" id="order-chart" width="240" height="240"
+                            style="display: block; box-sizing: border-box; height: 240px; width: 240px;"></canvas>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <canvas class="w-50 h-50 m-0" id="regions-chart" width="240" height="240"
+                            style="display: block; box-sizing: border-box; height: 240px; width: 240px;"></canvas>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <canvas class="w-50 h-50 m-0" id="products-chart" width="240" height="240"
+                            style="display: block; box-sizing: border-box; height: 240px; width: 240px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'cpashop/base/scripts.html' %}
+{% endblock %}

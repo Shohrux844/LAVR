@@ -1,0 +1,102 @@
+{% extends 'cpashop/base/include.html' %}
+{% load humanize %}
+
+{% block body %}
+	<div class="card mb-3 mt-2">
+        <div class="card-body">
+            <div class="col-lg-8 swiper-container">
+
+                <form action="{% url 'cpashop:order' %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <label class="form-label" for="formGroupNameInput">Ism:</label>
+                        <input class="form-control" name="last_name" id="formGroupNameInput" type="text">
+                        <input class="form-control" name="product_id" value="{{ product.id }}" type="hidden">
+                        <input class="form-control" name="thread_id" value="{{ thread.pk }}" type="hidden">
+                    </div>
+                    <!-- <div class="mb-2">
+                                            <label class="form-label" for="formGroupEmailInput">Telefon nomer:</label>
+                                            <input class="form-control" id="formGroupEmailInput" type="email" />
+                                        </div> -->
+                    <!-- <div class="mb-2">
+                                            <label class="form-label">Manzil:</label>
+                                            <select class="form-select" name="location" aria-label="Default select example">
+                                                <option selected="">Tanlash</option>
+                                                <option value="tashkent">Toshkent shahar</option>
+                                                <option value="andijon">Andijon viloyati</option>
+                                                <option value="buxoro">Buxoro viloyati</option>
+                                                <option value="fargona">Fargʻona viloyati</option>
+                                                <option value="jizzax">Jizzax viloyati</option>
+                                                <option value="namangan">Namangan viloyati</option>
+                                                <option value="navoiy">Navoiy viloyati</option>
+                                                <option value="qashqadaryo">Qashqadaryo viloyati</option>
+                                                <option value="qoraqalpogiston">Qoraqalpogʻiston viloyati</option>
+                                                <option value="samarqand">Samarqand viloyati</option>
+                                                <option value="sirdaryo">Sirdaryo viloyati</option>
+                                                <option value="surxondaryo">Surxondaryo viloyati</option>
+                                                <option value="toshkent">Toshkent viloyati</option>
+                                                <option value="xorazm">Xorazm viloyati</option>
+                                            </select>
+                                        </div> -->
+                    <div class="mb-4">
+                        <label class="form-label" for="formGroupEmailInput">Telefon nomer:</label>
+                        <input class="form-control" id="phone-mask" required="" name="phone_number" type="text">
+                    </div>
+                    <!-- <div class="mb-4">
+                                            <label class="form-label">Soni:</label>
+                                            <select name="quantity" class="form-select" aria-label="Default select example">
+                                                <option selected="">Tanlash</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                        </div> -->
+                    <span style="padding-bottom: 100px;">
+
+
+
+                </span>
+                    <div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 20px;">
+                        <button class="btn btn-primary" type="submit">Buyurtma berish</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 swiper-container" style="margin-top: 20px;">
+
+
+                            <img src="{{ product.image.url }}" alt="" class="img-main mb-3 img-fluid">
+
+
+                    <div class="row mb-5 thumbs">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 swiper-container">
+                <h5>
+                    {{ product.name }}
+                </h5>
+                {{ product.description|safe }}
+                <p></p>
+                <h4 class="d-flex align-items-center">
+                <span class="text-warning me-2">
+                    {% if thread %}
+                    	{{ thread.product_price|floatformat:0|intcomma }} so'm
+                    {% else %}
+                        {{ product.price|floatformat:0|intcomma }} so'm
+                    {% endif %}
+
+                </span>
+                </h4>
+            </div>
+        </div>
+    </div>
+{% endblock %}
