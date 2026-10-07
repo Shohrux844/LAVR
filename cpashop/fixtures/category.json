@@ -3,126 +3,162 @@
     "model": "cpashop.Category",
     "pk": 1,
     "fields": {
-      "name": "Uy uchun",
-      "slug": "uy-uchun",
-      "icon": "https://alijahon.uz/media/category_images/7AA93102-81A6-41E5-9DDA-9CA2C6427E3B.png"
+      "name": "Top mahsulotlar",
+      "slug": "top-mahsulotlar",
+      "icon": "https://lavr.ru/upload/uf/2e0/2e0c7dc9fc246e9c56372f729b041829.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 2,
     "fields": {
-      "name": "Bolalar uchun",
-      "slug": "bolalar-uchun",
-      "icon": "https://alijahon.uz/media/category_images/9FAD31AD-312A-44A0-9AC3-247DA89DE70E.png"
+      "name": "Yangi mahsulotlar",
+      "slug": "yangi-mahsulotlar",
+      "icon": "https://lavr.ru/upload/uf/c88/c885dacfe03c799dc8a1a8e643a82120.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 3,
     "fields": {
-      "name": "Sovg'a",
-      "slug": "sovga",
-      "icon": "https://alijahon.uz/media/category_images/81DA27B0-3F62-4376-AB3C-51B4781EEBC0.png"
+      "name": "Motomahsulotlar",
+      "slug": "motomahsulotlar",
+      "icon": "https://lavr.ru/upload/uf/0b3/0b3ae150c9f5c0386d26e63557896b0d.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 4,
     "fields": {
-      "name": "Ayollar",
-      "slug": "ayollar",
-      "icon": "https://alijahon.uz/media/category_images/DD1F5E6F-C0C2-46AB-B37A-4EE53C319728.png"
+      "name": "Dvigatel va avtomobil tizimlari",
+      "slug": "dvigatel-va-tizimlar",
+      "icon": "https://lavr.ru/upload/uf/d72/d72652285f5e258495616670a8cef1b1.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 5,
     "fields": {
-      "name": "Davolovchi mahsulotlar",
-      "slug": "davolovchi-mahsulotlar",
-      "icon": "https://alijahon.uz/media/category_images/A2ABC07B-AE08-4D84-B8DA-C21DA27DFCBC.jpeg"
+      "name": "Kuzov va tashqi ko'rinish",
+      "slug": "kuzov-va-tashqi-korinish",
+      "icon": "https://lavr.ru/upload/uf/758/7588064274274af48fd25bf8af0bf276.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 6,
     "fields": {
-      "name": "Erkaklar uchun",
-      "slug": "erkaklar-uchun",
-      "icon": "https://alijahon.uz/media/category_images/4BB898DC-10EE-4BC2-8FF2-CEE45C4A8452.jpeg"
+      "name": "Salon parvarishi",
+      "slug": "salon-parvarishi",
+      "icon": "https://lavr.ru/upload/uf/352/352c6671c645ea0151a863cbbd1fd0d9.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 7,
     "fields": {
-      "name": "Fitnes",
-      "slug": "fitnes",
-      "icon": "https://alijahon.uz/media/category_images/6F1333A3-9765-4216-AE0A-A576B81DB510.png"
+      "name": "Prisadkalar",
+      "slug": "prisadkalar",
+      "icon": "https://lavr.ru/upload/uf/60b/60be2f27b34933ee6a1ec28d9b8a6829.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 8,
     "fields": {
-      "name": "Davolovchi mazlar",
-      "slug": "davolovchi-mazlar",
-      "icon": "https://alijahon.uz/media/category_images/1561E941-0F91-4C87-BCAA-49DD49C48E0B.png"
+      "name": "Mahsulot to'plamlari",
+      "slug": "mahsulot-toplamlari",
+      "icon": "https://lavr.ru/upload/uf/4cb/4cb17f4ebb7eb374e3efe31b0dde3489.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 9,
     "fields": {
-      "name": "Moshina uchun",
-      "slug": "moshina-uchun",
-      "icon": "https://alijahon.uz/media/category_images/2233F793-0315-4552-ACB8-C7522FDDEC29.png"
+      "name": "Avtomoyka vositalari",
+      "slug": "avtomoyka-vositalari",
+      "icon": "https://lavr.ru/upload/uf/f85/f85bbf028b3abdc2c537b8bd391bb3af.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 10,
     "fields": {
-      "name": "Kitoblar",
-      "slug": "kitoblar",
-      "icon": "https://alijahon.uz/media/category_images/thumb_15799_100_100_0_0_crop.png"
+      "name": "Servis mahsulotlari",
+      "slug": "servis-mahsulotlari",
+      "icon": "https://lavr.ru/upload/uf/8e4/8e4a6f4726e8544c0566f122c2c3e188.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 11,
     "fields": {
-      "name": "Aqlli soatlar",
-      "slug": "aqlli-soatlar",
-      "icon": "https://alijahon.uz/media/category_images/96963A48-D993-40BC-80A8-3BAA85637F61.webp"
+      "name": "Qishki mahsulotlar",
+      "slug": "qishki-mahsulotlar",
+      "icon": "https://lavr.ru/upload/uf/205/2056ad57f452dfd2ccb893c4dc014fcf.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 12,
     "fields": {
-      "name": "Atir",
-      "slug": "atir",
-      "icon": "https://alijahon.uz/media/category_images/Yg4YXhzi--q1_xRv65IqTJrv1RrtiC9zGsLIhv3AP6th2DUxUHXY2xw_45ha_2Dtcdu6eYLd_B2wwXeu.jpg"
+      "name": "Avtokomponentlar",
+      "slug": "avtokomponentlar",
+      "icon": "https://lavr.ru/upload/uf/714/t75s4gx199tf84ni7iffr57xhnk9mwe1.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 13,
     "fields": {
-      "name": "Yangi yil mahsulotlari",
-      "slug": "yangi-yil-mahsulotlari",
-      "icon": "https://img.icons8.com/color/48/gift--v1.png"
+      "name": "Avtomobil moylari",
+      "slug": "avtomobil-moylari",
+      "icon": "https://lavr.ru/upload/uf/bc6/3ukqh06ugb212syjiemnnw3t3qe6tcpd.svg"
     }
   },
   {
     "model": "cpashop.Category",
     "pk": 14,
     "fields": {
-      "name": "Elektronika",
-      "slug": "elektronika",
-      "icon": "https://alijahon.uz/media/category_images/IMG_1699.webp"
+      "name": "Aksessuarlar",
+      "slug": "aksessuarlar",
+      "icon": "https://lavr.ru/upload/uf/3c3/00azm32gcl6k6zpg72g1an22rdhyeci0.svg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 15,
+    "fields": {
+      "name": "Maishiy kimyo",
+      "slug": "maishiy-kimyo",
+      "icon": "https://lavr.ru/upload/uf/30e/1byx851uv7j9zrf3l03h4ahvrp30wdmq.svg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 16,
+    "fields": {
+      "name": "Klining vositalari",
+      "slug": "klining-vositalari",
+      "icon": "https://lavr.ru/upload/uf/38b/u2t1x6mjjt0li90y7hbi66zgkiz4fhav.svg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 17,
+    "fields": {
+      "name": "Qurol parvarishi",
+      "slug": "qurol-parvarishi",
+      "icon": "https://lavr.ru/upload/uf/3ac/ssxbp8sbbwcgbg8hvnuxch6nr9crdsix.svg"
+    }
+  },
+  {
+    "model": "cpashop.Category",
+    "pk": 18,
+    "fields": {
+      "name": "Deteyling kimyosi",
+      "slug": "deteyling-kimyosi",
+      "icon": "https://lavr.ru/upload/uf/12f/k8m1dhchix855mavaxrqjjmoow7hvkeg.svg"
     }
   }
 ]
