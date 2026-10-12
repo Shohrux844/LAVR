@@ -1,5 +1,6 @@
 {% extends "clients/base_client.html" %}
 {% block title %}Buyurtma berish{% endblock %}
+{% block breadcrumb %}Yangi buyurtma{% endblock %}
 
 {% block content %}
     <div style="font-size:15px; font-weight:600; margin-bottom:12px;">Yangi buyurtma</div>
@@ -12,7 +13,7 @@
         {% csrf_token %}
         {{ formset.management_form }}
         <div class="card" style="padding:16px; margin-bottom:12px;">
-            <div id="formset-container">
+            <div id="formset-container" style="max-height:52vh; overflow-y:auto; padding-right:4px;">
                 {% for f in formset %}
                     <div class="formset-row"
                          style="display:grid; grid-template-columns:2fr 1fr auto; gap:8px; align-items:flex-end; margin-bottom:8px;">
@@ -33,10 +34,10 @@
                         </div>
                         <div>
                             {% if forloop.first %}<label class="form-label">Miqdor</label>{% endif %}
-                            <input type="number" name="{{ f.quantity.html_name }}" class="form-control"
+                            <input type="number" name="{{ f.quantity.html_name }}" class="form-control qty-input"
                                    value="{{ f.quantity.value|default:1 }}" min="1">
                         </div>
-                        <div {% if forloop.first %}style="padding-top:22px;"{% endif %}>
+                        <div class="del-cell" {% if forloop.first %}style="padding-top:22px;"{% endif %}>
                             <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i
                                     class="ti ti-trash"></i></button>
                         </div>
@@ -56,9 +57,11 @@
             {{ form.note }}
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
-            <i class="ti ti-send"></i> So'rovni yuborish
-        </button>
+        <div style="position:sticky; bottom:0; background:var(--bg); padding:10px 0; z-index:5;">
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
+                <i class="ti ti-send"></i> So'rovni yuborish
+            </button>
+        </div>
     </form>
 {% endblock %}
 
@@ -75,6 +78,7 @@
         function calcTotal() {
             let total = 0;
             document.querySelectorAll('.formset-row').forEach(row => {
+                if (row.style.display === 'none') return;   // o'chirilgan qatorlar hisobga olinmaydi
                 const price = parseFloat(row.querySelector('.price-input')?.value) || 0;
                 const qty = parseFloat(row.querySelector('input[name$="-quantity"]')?.value) || 0;
                 total += price * qty;
@@ -98,15 +102,31 @@
             const container = document.getElementById('formset-container');
             const totalForms = document.querySelector('[name$=TOTAL_FORMS]');
             const idx = parseInt(totalForms.value);
-            const firstRow = container.querySelector('.formset-row');
-            const newRow = firstRow.cloneNode(true);
+            const newRow = container.querySelector('.formset-row').cloneNode(true);
+
+            // Birinchi qatordagi "Tovar"/"Miqdor" yozuvlari va tepa bo'shliq klonga o'tmasin
+            newRow.querySelectorAll('label').forEach(l => l.remove());
+            const delCell = newRow.querySelector('.del-cell');
+            if (delCell) delCell.style.paddingTop = '';
+
             newRow.querySelectorAll('input, select').forEach(el => {
                 if (el.name) el.name = el.name.replace(/-\d+-/, `-${idx}-`);
-                if (el.type === 'checkbox') el.checked = false; else el.value = '';
+                if (el.id) el.id = el.id.replace(/-\d+-/, `-${idx}-`);
+                if (el.type === 'checkbox') {
+                    el.checked = false;
+                } else if (el.name && el.name.endsWith('-quantity')) {
+                    el.value = 1;               // miqdor bo'sh emas, 1 bo'lib chiqadi
+                } else {
+                    el.value = '';
+                }
             });
-            newRow.style.display = '';
+
+            // MUHIM: '' emas, 'grid' — aks holda inline display:grid o'chib, qator pastga tushib ketadi
+            newRow.style.display = 'grid';
             container.appendChild(newRow);
+            container.scrollTop = container.scrollHeight;   // yangi qator ko'rinib tursin
             totalForms.value = idx + 1;
+            calcTotal();
         }
 
         document.addEventListener('input', calcTotal);

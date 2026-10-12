@@ -1,38 +1,152 @@
 {% extends "clients/base_client.html" %}
 {% block title %}Tovarlar{% endblock %}
+{% block breadcrumb %}Tovarlar{% endblock %}
+
+{% block extra_head %}
+    <style>
+        /* LAVR.ru kartasi: rasm tepada, keyin narx, mavjudlik, nom */
+        .p-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 14px;
+        }
+
+        .p-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow .15s ease, transform .15s ease;
+        }
+
+        .p-item:hover {
+            box-shadow: 0 6px 18px rgba(23, 23, 31, .08);
+            transform: translateY(-2px);
+        }
+
+        /* Rasm qutisi doim kvadrat, rasm kesilmaydi (contain) va kattalashmaydi */
+        .p-icon {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-height: 190px;
+            background: #fff center / contain no-repeat;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .p-icon img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .p-body {
+            padding: 10px 12px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .p-price {
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .p-price small {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .p-avail {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .p-avail.ok {
+            color: #3B6D11;
+        }
+
+        .p-avail.low {
+            color: #854F0B;
+        }
+
+        .p-avail.out {
+            color: #A3A3B8;
+        }
+
+        .p-title {
+            font-size: 12.5px;
+            line-height: 1.35;
+            color: var(--text);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .p-sku {
+            font-size: 10.5px;
+            color: var(--text-faint);
+            margin-top: auto;
+            padding-top: 4px;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
-    <form method="get" style="display:flex; gap:8px; margin-bottom:12px;">
-        <input type="text" name="q" value="{{ q }}" placeholder="Tovar nomi yoki SKU..." class="form-control">
-        <button type="submit" class="btn btn-primary"><i class="ti ti-search"></i></button>
-        {% if q %}<a href="{% url 'client_product_list' %}" class="btn">✕</a>{% endif %}
+    <form method="get" style="display:flex; gap:8px; margin-bottom:16px; align-items:center;">
+        <input type="text" name="q" value="{{ q }}" placeholder="Tovar nomi yoki SKU..." class="form-control"
+               style="max-width:420px;">
+        <button type="submit" class="btn btn-primary btn-sm" style="padding:9px 12px;">
+            <i class="ti ti-search"></i>
+        </button>
+        {% if q %}<a href="{% url 'client_product_list' %}" class="btn btn-sm">✕</a>{% endif %}
+
+        <a href="{% url 'client_order_request_create' %}" class="btn btn-primary btn-sm"
+           style="margin-left:auto; padding:9px 14px; white-space:nowrap;">
+            <i class="ti ti-shopping-cart-plus"></i> Buyurtma berish
+        </a>
     </form>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+    <div class="p-grid">
         {% for p in products %}
-            <div class="card" style="padding:12px;">
-                {% if p.image %}
-                    <img src="{{ p.image.url }}" style="width:100%; height:90px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
-                {% else %}
-                    <div style="width:100%; height:90px; background:#F5F5F7; border-radius:8px; margin-bottom:8px; display:flex; align-items:center; justify-content:center;">
-                        <i class="ti ti-package" style="font-size:28px; color:#ccc;"></i>
-                    </div>
-                {% endif %}
-                <div style="font-size:13px; font-weight:500;">{{ p.name }}</div>
-                <div style="font-size:11px; color:#888; margin-top:2px;">{{ p.sku }}</div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                    <span style="font-size:13px; font-weight:600;">{{ p.price|floatformat:0 }} so'm</span>
-                    {% if p.stock_status == 'ok' %}<span class="badge badge-green">{{ p.stock }} dona</span>
-                    {% elif p.stock_status == 'low' %}<span class="badge badge-amber">{{ p.stock }} dona</span>
-                    {% else %}<span class="badge badge-red">Tugagan</span>{% endif %}
+            <div class="p-item">
+                <div class="p-icon">
+                    {% if p.image %}
+                        <img src="{{ p.image.url }}" alt="{{ p.name }}">
+                    {% else %}
+                        <i class="ti ti-package" style="font-size:34px; color:#D5D5DA;"></i>
+                    {% endif %}
+                </div>
+                <div class="p-body">
+                    <div class="p-price">{{ p.price|floatformat:0 }} <small>so'm</small></div>
+                    {% if p.stock_status == 'ok' %}
+                        <span class="p-avail ok">Mavjud · {{ p.stock }} dona</span>
+                    {% elif p.stock_status == 'low' %}
+                        <span class="p-avail low">Kam qoldi · {{ p.stock }} dona</span>
+                    {% else %}
+                        <span class="p-avail out">Tugagan</span>
+                    {% endif %}
+                    <div class="p-title">{{ p.name }}</div>
+                    <div class="p-sku">{{ p.sku }}</div>
                 </div>
             </div>
         {% empty %}
-            <div style="grid-column:1/-1; text-align:center; color:#aaa; padding:32px; font-size:13px;">Tovar topilmadi</div>
+            <div style="grid-column:1/-1; text-align:center; color:var(--text-faint); padding:40px; font-size:13px;">
+                Tovar topilmadi
+            </div>
         {% endfor %}
     </div>
 
-    <a href="{% url 'client_order_request_create' %}" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:16px; padding:12px;">
-        <i class="ti ti-shopping-cart-plus"></i> Buyurtma berish
-    </a>
+    {% include "partials/pagination.html" with page_obj=products %}
 {% endblock %}

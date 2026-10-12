@@ -1,16 +1,14 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% block title %}Agent{% endblock %} — SavdoTizim</title>
+    <title>{% block title %}Mijoz{% endblock %} — SavdoTizim</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap"
           rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
     <style>
         :root {
             --bg: #F6F6FB;
@@ -96,7 +94,10 @@
             padding: 0 20px;
         }
 
-        .nav-link {
+        /* Sidebar tugmalari. Avval shablonda class="nav-item" yozilgan edi,
+           CSSda esa faqat .nav-link bor edi, shuning uchun uslub qo'llanmagan.
+           Endi ikkalasi ham bir xil ishlaydi. */
+        .nav-link, .nav-item {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -110,19 +111,19 @@
             text-decoration: none;
         }
 
-        .nav-link:hover {
+        .nav-link:hover, .nav-item:hover {
             background: #F5F5FA;
             color: var(--text);
             transform: translateX(2px);
         }
 
-        .nav-link.active {
+        .nav-link.active, .nav-item.active {
             background: var(--brand-light);
             color: var(--brand);
             font-weight: 600;
         }
 
-        .nav-link.active::before {
+        .nav-link.active::before, .nav-item.active::before {
             content: '';
             position: absolute;
             left: -10px;
@@ -133,7 +134,7 @@
             background: var(--brand-gradient);
         }
 
-        .nav-link i {
+        .nav-link i, .nav-item i {
             font-size: 17px;
         }
 
@@ -248,6 +249,7 @@
 
         .btn-primary:hover {
             filter: brightness(1.08);
+            background: var(--brand-gradient);
         }
 
         .btn-danger {
@@ -395,6 +397,44 @@
             padding: 22px;
             flex: 1;
         }
+
+        /* Telefonda sidebar tepaga gorizontal menyu bo'lib o'tadi */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                min-height: 0;
+                flex-direction: row;
+                align-items: center;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                overflow-x: auto;
+            }
+
+            .sidebar > div:first-child {
+                border-bottom: none !important;
+                padding: 10px 12px !important;
+            }
+
+            .sidebar nav {
+                display: flex;
+                padding: 6px 0 !important;
+                overflow: visible !important;
+            }
+
+            .sidebar .nav-item, .sidebar .nav-link {
+                white-space: nowrap;
+                margin: 0 2px;
+            }
+
+            .sidebar > div:last-child {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
@@ -405,30 +445,30 @@
         <div class="brand-mark">S</div>
         <div>
             <span class="brand-font" style="font-size:14.5px; font-weight:700;">SavdoTizim</span>
-            <div style="font-size:11px; color:var(--text-muted); margin-top:1px;">Agent panel</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:1px;">Mijoz panel</div>
         </div>
     </div>
 
     <nav style="flex:1; padding:8px 0; overflow-y:auto;">
         <a href="{% url 'client_dashboard' %}"
-           class="nav-item {% if request.resolver_match.url_name == 'client_dashboard' %}active{% endif %}">
-            <i class="ti ti-layout-dashboard"></i>Bosh
+           class="nav-link {% if request.resolver_match.url_name == 'client_dashboard' %}active{% endif %}">
+            <i class="ti ti-layout-dashboard"></i> Bosh sahifa
         </a>
         <a href="{% url 'client_product_list' %}"
-           class="nav-item {% if request.resolver_match.url_name == 'client_product_list' %}active{% endif %}">
-            <i class="ti ti-package"></i>Tovarlar
+           class="nav-link {% if request.resolver_match.url_name == 'client_product_list' %}active{% endif %}">
+            <i class="ti ti-package"></i> Tovarlar
         </a>
         <a href="{% url 'client_order_request_create' %}"
-           class="nav-item {% if request.resolver_match.url_name == 'client_order_request_create' %}active{% endif %}">
-            <i class="ti ti-shopping-cart-plus"></i>Buyurtma
+           class="nav-link {% if request.resolver_match.url_name == 'client_order_request_create' %}active{% endif %}">
+            <i class="ti ti-shopping-cart-plus"></i> Buyurtma
         </a>
         <a href="{% url 'client_order_request_list' %}"
-           class="nav-item {% if 'order_request' in request.resolver_match.url_name %}active{% endif %}">
-            <i class="ti ti-list-details"></i>So'rovlarim
+           class="nav-link {% if request.resolver_match.url_name == 'client_order_request_list' or request.resolver_match.url_name == 'client_order_request_detail' %}active{% endif %}">
+            <i class="ti ti-list-details"></i> So'rovlarim
         </a>
         <a href="{% url 'client_payment_list' %}"
-           class="nav-item {% if request.resolver_match.url_name == 'client_payment_list' %}active{% endif %}">
-            <i class="ti ti-credit-card"></i>To'lovlar
+           class="nav-link {% if request.resolver_match.url_name == 'client_payment_list' %}active{% endif %}">
+            <i class="ti ti-credit-card"></i> To'lovlar
         </a>
     </nav>
 
@@ -437,7 +477,10 @@
             <div style="display:flex; align-items:center; gap:10px;">
                 <div class="avatar">{{ request.user.username|slice:":2"|upper }}</div>
                 <div style="flex:1;">
-                    <div style="font-size:12.5px; font-weight:600;">{{ request.user.agent_profile }}</div>
+                    {# Mijoz panelida agent_profile emas, cliente_profile ko'rsatiladi #}
+                    <div style="font-size:12.5px; font-weight:600;">
+                        {{ request.user.cliente_profile|default:request.user.username }}
+                    </div>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit"

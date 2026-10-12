@@ -53,7 +53,7 @@ class OrderRequestItemForm(forms.ModelForm):
 OrderRequestItemFormSet = inlineformset_factory(
     OrderRequest, OrderRequestItem,
     form=OrderRequestItemForm,
-    extra=1, min_num=1, validate_min=False,
+    extra=0, min_num=1, validate_min=False,
     can_delete=True,
 )
 
